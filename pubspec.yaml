@@ -31,7 +31,17 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
   google_fonts: ^6.1.0
+  http: ^1.1.0
+  provider: ^6.1.1
+  url_launcher: ^6.2.4
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/icon_logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -53,7 +63,7 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/images/
+    - assets/images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "370417774517",
+    "project_id": "raf-cozy",
+    "storage_bucket": "raf-cozy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:370417774517:android:3dcff02d552c037e8af3fc",
+        "android_client_info": {
+          "package_name": "com.example.cozy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1qo6PCZN2jM4ELKS-eVqHgSR022muLG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
