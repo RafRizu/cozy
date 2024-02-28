@@ -23,7 +23,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     final RegExp urlRegExp = RegExp(
-      r'^(http|https):\/\/([A-Za-z0-9\-]+\.?)+([A-Za-z0-9]+:[0-9]+)?([\/\?].*)?$',
+      r'^(http|https):\/\/([A-Za-z0-9\- ]+\.?)+([A-Za-z0-9]+:[0-9]+)?([\/\?].*)?$',
     );
     Future<void> _showMyDialog(context) async {
       return showDialog<void>(
