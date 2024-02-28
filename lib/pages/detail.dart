@@ -8,23 +8,62 @@ import 'package:cozy/widgets/rating_item.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   final Space space;
 
   DetailPage(this.space);
+
+  @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  bool isClicked = false;
 
   @override
   Widget build(BuildContext context) {
     final RegExp urlRegExp = RegExp(
       r'^(http|https):\/\/([A-Za-z0-9\-]+\.?)+([A-Za-z0-9]+:[0-9]+)?([\/\?].*)?$',
     );
+    Future<void> _showMyDialog(context) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Konfirmasi'),
+            content: const SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Apakah kamu ingin menelpon pemilik kos?'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Batal'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Hubungi'),
+                onPressed: () {
+                  _makePhoneCall('${widget.space.phone}');
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
     return Scaffold(
       body: SafeArea(
         bottom: false,
         child: Stack(
           children: [
             Image.network(
-              '${space.imageUrl}',
+              '${widget.space.imageUrl}',
               width: MediaQuery.of(context).size.width,
               height: 350,
               fit: BoxFit.cover,
@@ -81,7 +120,7 @@ class DetailPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${space.name}',
+                                  '${widget.space.name}',
                                   style: blackTextStyle.copyWith(fontSize: 22),
                                 ),
                                 SizedBox(
@@ -91,7 +130,7 @@ class DetailPage extends StatelessWidget {
                                   TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: '\$${space.price}',
+                                        text: '\$${widget.space.price}',
                                         style: purpleTextStyle.copyWith(
                                             fontSize: 16),
                                       ),
@@ -110,13 +149,12 @@ class DetailPage extends StatelessWidget {
                                 return Container(
                                   child: RatingItem(
                                     index: index,
-                                    rating:
-                                        space.rating ?? 0, // handle null rating
+                                    rating: widget.space.rating ??
+                                        0, // handle null rating
                                   ),
                                 );
                               }).toList(),
                             )
-
                           ],
                         ),
                       ),
@@ -138,17 +176,17 @@ class DetailPage extends StatelessWidget {
                         children: [
                           FacilitiesCard(
                             name: 'kitchen',
-                            total: space.numOfKitchens,
+                            total: widget.space.numOfKitchens,
                             imageUrl: 'assets/images/icon_kitchen.png',
                           ),
                           FacilitiesCard(
                             name: 'bedroom',
-                            total: space.numOfBedrooms,
+                            total: widget.space.numOfBedrooms,
                             imageUrl: 'assets/images/icon_bedroom.png',
                           ),
                           FacilitiesCard(
                             name: 'big lemari',
-                            total: space.numOfCupboards,
+                            total: widget.space.numOfCupboards,
                             imageUrl: 'assets/images/icon_cupboard.png',
                           ),
                         ],
@@ -173,7 +211,7 @@ class DetailPage extends StatelessWidget {
                               height: 88,
                               child: ListView(
                                   scrollDirection: Axis.horizontal,
-                                  children: space.photos?.map((item) {
+                                  children: widget.space.photos?.map((item) {
                                         return Padding(
                                           padding:
                                               const EdgeInsets.only(right: 10),
@@ -226,7 +264,7 @@ class DetailPage extends StatelessWidget {
                                   height: 6,
                                 ),
                                 Text(
-                                  '${space.address} \n${space.city}',
+                                  '${widget.space.address} \n${widget.space.city}',
                                   style: greyLightTextStyle,
                                 ),
                               ],
@@ -236,7 +274,7 @@ class DetailPage extends StatelessWidget {
                                 _launchInBrowser(
                                   Uri.parse(
                                       // 'https://pub.dev/packages/url_launcher/example'
-                                      '${space.mapUrl}'),
+                                      '${widget.space.mapUrl}'),
                                   context,
                                   urlRegExp,
                                 );
@@ -261,7 +299,7 @@ class DetailPage extends StatelessWidget {
                                 BorderRadius.all(Radius.circular(17))),
                         child: ElevatedButton(
                           onPressed: () {
-                            _makePhoneCall('${space.phone}');
+                            _showMyDialog(context);
                           },
                           child: Text(
                             'Book Now',
@@ -295,10 +333,19 @@ class DetailPage extends StatelessWidget {
                       height: 40,
                     ),
                   ),
-                  Image.asset(
-                    'assets/images/btn_wishlist.png',
-                    width: 40,
-                    height: 40,
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        isClicked = !isClicked;
+                      });
+                    },
+                    child: Image.asset(
+                      isClicked
+                          ? 'assets/images/btn_wishlist_active.png'
+                          : 'assets/images/btn_wishlist.png',
+                      width: 40,
+                      height: 40,
+                    ),
                   ),
                 ],
               ),
@@ -359,3 +406,5 @@ Future<void> _launchInBrowserNah(
     );
   }
 }
+
+
